@@ -25,7 +25,7 @@ data("airline_safety")
 
 ------------------------------------------------------------------------
 
-These are the starting data (the original article can be found [here](https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/):
+These are the starting data (the original article can be found [here](https://fivethirtyeight.com/features/should-travelers-avoid-flying-airlines-that-have-had-crashes-in-the-past/)):
 
 ``` r
 head(airline_safety)
