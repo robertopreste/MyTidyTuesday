@@ -45,7 +45,7 @@ ___
 ## Visualizations  
 
 
-```{r}
+```{r dpi=200}
 airline_diff %>% 
     filter(event == "fatalities", occurrences != 0) %>% 
     ggplot(aes(x = reorder(airline, occurrences), y = occurrences, fill = occurrences)) + 
@@ -55,7 +55,7 @@ airline_diff %>%
     labs(x = "Airline", y = "Fatalities", fill = "", title = "Difference in number of fatalities", subtitle = "Years 1985-1999 vs 2000-2014")
 ```
 
-```{r}
+```{r dpi=200}
 airline_diff %>% 
     filter(event == "fatal_accidents", occurrences != 0) %>% 
     ggplot(aes(x = reorder(airline, occurrences), y = occurrences, fill = occurrences)) + 
@@ -65,7 +65,7 @@ airline_diff %>%
     labs(x = "Airline", y = "Fatal Accidents", fill = "", title = "Difference in number of fatal accidents", subtitle = "Years 1985-1999 vs 2000-2014")
 ```
 
-```{r}
+```{r dpi=200}
 airline_diff %>% 
     filter(event == "incidents", occurrences != 0) %>% 
     ggplot(aes(x = reorder(airline, occurrences), y = occurrences, fill = occurrences)) + 
