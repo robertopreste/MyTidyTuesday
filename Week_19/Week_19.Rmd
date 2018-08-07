@@ -2,11 +2,7 @@
 title: "TidyTuesday Week 19 - Airline Safety"
 author: "Roberto Preste"
 date: "`r Sys.Date()`"
-output:
-  html_document:
-    df_print: paged
-editor_options:
-  chunk_output_type: inline
+output: github_document
 ---
 
 ```{r}
