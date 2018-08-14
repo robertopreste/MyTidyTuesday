@@ -46,12 +46,12 @@ top_20_handles <- tweets %>%
 top_20_handles <- top_20_handles[1:20, ]
 ```
 
-```{r, fig.width=4, dpi=200}
+```{r, dpi=200}
 top_20_handles %>% 
     ggplot(aes(x = reorder(author, n), y = n)) + 
     geom_col(aes(fill = account_category)) + 
     coord_flip() + 
-    labs(x = "Authors", y = "Tweets", title = "Top 20 tweeters", fill = "Category: ") + 
+    labs(x = "Authors", y = "Tweets", title = "Top 20 tweeters") + 
     theme(legend.position = "bottom")
 ```
 
@@ -67,7 +67,7 @@ categ_count <- tweets %>%
     summarise(n = n())
 ```
 
-```{r, fig.width=4, dpi=200}
+```{r, dpi=200}
 categ_count %>% 
     ggplot(aes(x = reorder(account_category, n), y = n)) + 
     geom_col(aes(fill = account_category)) + 
@@ -92,7 +92,7 @@ top_tweets_grouped <- top_tweets %>%
     filter(!is.na(pub_date))
 ```
 
-```{r, fig.width=4, dpi=200}
+```{r, dpi=200}
 top_tweets_grouped %>% 
     ggplot(aes(x = pub_date, y = n)) + 
     geom_line(aes(color = account_category)) + 
@@ -116,7 +116,7 @@ tweets_dates_grouped <- tweets_dates %>%
     filter(!is.na(pub_date))
 ```
 
-```{r, fig.width=4, dpi=200}
+```{r, dpi=200}
 tweets_dates_grouped %>% 
     ggplot(aes(x = pub_date, y = n)) + 
     geom_line(aes(color = account_category)) + 
@@ -143,7 +143,7 @@ tweets_foll_grouped <- tweets_dates %>%
     filter(!is.na(pub_date))
 ```
 
-```{r, fig.width=4, dpi=200}
+```{r, dpi=200}
 tweets_foll_grouped %>% 
     ggplot(aes(x = pub_date)) + 
     geom_line(aes(y = log(followers), color = "red")) + 
