@@ -51,7 +51,7 @@ top_20_handles %>%
     ggplot(aes(x = reorder(author, n), y = n)) + 
     geom_col(aes(fill = account_category)) + 
     coord_flip() + 
-    labs(x = "Authors", y = "Tweets", title = "Top 20 tweeters") + 
+    labs(x = "Authors", y = "Tweets", title = "Top 20 tweeters", fill = "") + 
     theme(legend.position = "bottom")
 ```
 
