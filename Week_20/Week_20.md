@@ -5,44 +5,23 @@ Roberto Preste
 
 ``` r
 library(tidyverse)
-```
-
-    ## ── Attaching packages ────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
-
-    ## ✔ ggplot2 3.0.0     ✔ purrr   0.2.5
-    ## ✔ tibble  1.4.2     ✔ dplyr   0.7.5
-    ## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
-    ## ✔ readr   1.1.1     ✔ forcats 0.3.0
-
-    ## ── Conflicts ───────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
-
-``` r
 library(lubridate)
 ```
 
-    ## 
-    ## Attaching package: 'lubridate'
-
-    ## The following object is masked from 'package:base':
-    ## 
-    ##     date
-
 ------------------------------------------------------------------------
 
-The original data are available on fivethirtyeight's [GitHub](https://github.com/fivethirtyeight/russian-troll-tweets) and are detailed in a specific [article](https://fivethirtyeight.com/features/why-were-sharing-3-million-russian-troll-tweets/).
+The original data are not included in this repo, given their dimension, but are available on fivethirtyeight's [GitHub](https://github.com/fivethirtyeight/russian-troll-tweets) and are detailed in a specific [article](https://fivethirtyeight.com/features/why-were-sharing-3-million-russian-troll-tweets/).
 
 ``` r
 tweet_1 <- read_csv("russian-troll-tweets/IRAhandle_tweets_1.csv", col_types = "ccccccciiicciic")
-tweet_2 <- read_csv("russian-troll-tweets/IRAhandle_tweets_2.csv", col_types = "ccccccciiicciic") # issues
+tweet_2 <- read_csv("russian-troll-tweets/IRAhandle_tweets_2.csv", col_types = "ccccccciiicciic") 
 tweet_3 <- read_csv("russian-troll-tweets/IRAhandle_tweets_3.csv", col_types = "ccccccciiicciic")
 tweet_4 <- read_csv("russian-troll-tweets/IRAhandle_tweets_4.csv", col_types = "ccccccciiicciic")
 tweet_5 <- read_csv("russian-troll-tweets/IRAhandle_tweets_5.csv", col_types = "ccccccciiicciic")
-tweet_6 <- read_csv("russian-troll-tweets/IRAhandle_tweets_6.csv", col_types = "ccccccciiicciic") # issues
+tweet_6 <- read_csv("russian-troll-tweets/IRAhandle_tweets_6.csv", col_types = "ccccccciiicciic") 
 tweet_7 <- read_csv("russian-troll-tweets/IRAhandle_tweets_7.csv", col_types = "ccccccciiicciic")
-tweet_8 <- read_csv("russian-troll-tweets/IRAhandle_tweets_8.csv", col_types = "ccccccciiicciic") # issues
-tweet_9 <- read_csv("russian-troll-tweets/IRAhandle_tweets_9.csv", col_types = "ccccccciiicciic") # issues
+tweet_8 <- read_csv("russian-troll-tweets/IRAhandle_tweets_8.csv", col_types = "ccccccciiicciic") 
+tweet_9 <- read_csv("russian-troll-tweets/IRAhandle_tweets_9.csv", col_types = "ccccccciiicciic") 
 ```
 
 Let's merge all the dataset together.
@@ -95,7 +74,6 @@ categ_count %>%
     geom_col(aes(fill = account_category)) + 
     coord_flip() + 
     labs(x = "Category", y = "Accounts", title = "Number of handles per category") + 
-    # theme(legend.position = "bottom")
     guides(fill = FALSE)
 ```
 
