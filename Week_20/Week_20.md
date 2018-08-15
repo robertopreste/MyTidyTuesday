@@ -1,7 +1,7 @@
 TidyTuesday Week 20 - Russian Troll Tweets
 ================
 Roberto Preste
-2018-08-14
+2018-08-15
 
 ``` r
 library(tidyverse)
@@ -133,10 +133,12 @@ tweets_dates_grouped %>%
 ![](Week_20_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
 What we found previously might hold true concerning commercial tweeters: their number of tweets suddenly drops since 2016. However, we can also discover some more interesting insights:
-\* fearmonger accounts (those spreading fake crisis news) seem to disappear right before 2017 (luckily, I would add);
-\* Left trolls had a peak in their activity in mid 2016: I'm no expert in American politics, but this seem to overlap with the Democrats presidential primaries;
-\* Right trolls, although having a fairly constant tweeting rate initially, seem to show some sort of exponential increase starting from the first months of 2016;
-\* all the other categories do not show any particular trend.
+
+-   fearmonger accounts (those spreading fake crisis news) seem to disappear right before 2017 (luckily, I would add);
+-   Left trolls had a peak in their activity in mid 2016: I'm no expert in American politics, but this seem to overlap with the Democrats presidential primaries;
+-   Right trolls, although having a fairly constant tweeting rate initially, seem to show some sort of exponential increase starting from the first months of 2016;
+-   all the other categories do not show any particular trend.
+
 In addition, almost all categories have an almost identical monthly trend in tweets.
 
 Let's see how the number of followers and followed accounts changed for each of these categories over time.
