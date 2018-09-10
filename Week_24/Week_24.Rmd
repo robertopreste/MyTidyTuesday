@@ -1,0 +1,172 @@
+---
+title: "Week 24 - Cats vs Dogs (USA)"
+output: github_document
+author: "Roberto Preste"
+date: "`r Sys.Date()`"
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(tidyverse)
+library(magrittr)
+library(readxl)
+library(skimr)
+```
+
+___ 
+
+While the original article from the [Washington Post](https://www.washingtonpost.com/news/wonk/wp/2014/07/28/where-cats-are-more-popular-than-dogs-in-the-u-s-and-all-over-the-world/?utm_term=.670d783ef6cc) shows the distribution of cat and dogs in the entire globe, for this week we'll focus only on data coming from the USA, using a dataset offered by [data.world](https://data.world/datanerd/cat-vs-dog-popularity-in-u-s).  
+
+Let's first read in the data and rename the columns for simplicity.  
+
+```{r}
+df <- read_excel("data/catsvdogs.xlsx", skip = 1, 
+                 col_names = c("location", "households_1000", "perc_households_pets", 
+                               "num_pet_households_1000", "perc_dog_owners", 
+                               "dog_own_households_1000", "mean_num_dogs_per_household", 
+                               "dog_population_1000", "perc_cat_owners", "cat_own_households_1000", 
+                               "mean_num_cats_per_household", "cat_population_1000"))
+```
+
+```{r}
+head(df)
+```
+
+___ 
+
+## Data Exploration  
+
+Now we can have a look at the data structure.  
+
+```{r}
+skim(df)
+```
+
+Luckily there are no missing values, so we can proceed with our analysis.  
+
+___ 
+
+### Pet-friendly households per US State
+
+Let's first visualize the percentage of household with pets in each State.  
+
+```{r, dpi=200, fig.height=3}
+df %>% 
+    ggplot(aes(x = reorder(location, -perc_households_pets), 
+               y = perc_households_pets, fill = location)) + 
+    geom_col() + 
+    coord_flip() + 
+    labs(x = "US State", y = "%", title = "Percentage of households with pets", subtitle = "District of Columbia seems to be not so pet-friendly.") + 
+    guides(fill = FALSE)
+```
+
+
+It is clear that in every US State at least half of the households have pets; particularly, we can see that Vermont is definitely a pet-friendly State, with more than 70% household having at least one dog or cat.  
+District of Columbia, instead, doesn't seem to like pets this much, scoring a little more than 20% in this chart.  
+
+### Dog- and cat-owning households  
+
+Let's see if there is any preference for dogs over cats (or viceversa) in these States.  
+
+```{r, dpi=200, fig.height=3}
+df %>% 
+    ggplot(aes(x = reorder(location, -perc_households_pets), fill = location)) + 
+    geom_col(aes(y = dog_own_households_1000 - cat_own_households_1000)) + 
+    coord_flip() + 
+    labs(x = "US State", y = "Difference (in 1000s households)", 
+         title = "Dog- vs cat-owning households", 
+         subtitle = "Households with dogs definitely outnumber those hosting cats.\nNegative values represent a preference for cats, while positive values denote a higher number of households hosting dogs.") + 
+    guides(fill = FALSE) + 
+    scale_y_continuous(breaks = c(-250, 0, 250, 500, 750, 1000, 1250))
+```
+
+
+For this plot I computed the difference between dog-owning households and cat-owning ones, in thousands: negative values represent a preference for cats, while positive values denote a higher number of households hosting dogs.  
+A couple of peculiar data points are Texas and Massachusetts, where people seem to definitely love dogs, in the former case, and cats, in the latter.  
+
+### Mean number of dogs/cats per household  
+
+We might be interested in knowing whether, as the number of households with pets increases, so does the mean number of dogs/cats hosted in each household. Let's find out.  
+
+```{r}
+gath_df <- df %>% 
+    mutate(dogs = mean_num_dogs_per_household, 
+           cats = mean_num_cats_per_household) %>% 
+    select(location, num_pet_households_1000, dogs, cats) %>% 
+    gather(key = "pet", value = "value", dogs, cats)
+```
+
+```{r}
+gath_df
+```
+
+
+```{r, dpi=200, message=FALSE}
+gath_df %>% 
+    ggplot(aes(x = num_pet_households_1000, y = value, color = pet)) + 
+    geom_smooth() + 
+    geom_point(alpha = 0.5) + 
+    labs(x = "Households (in 1000s)", y = "Number of pets", 
+         title = "Mean number of dogs/cats per household", 
+         subtitle = "The number of pets per household seems to reach a plateau after 1 million households with pets.")
+```
+
+
+Although the data are a bit messy, an interesting trend is visible here: initially, as the number of households with pets grows, the mean number of pets per household steeply grows as well, and this is true for both dogs and cats. However, after about the first million of households with pets, the mean number of pets seems to reach a plateau, with cats outnumbering dogs on average.  
+
+___
+
+## Discussion  
+
+So we have found two interesting things here:  
+
+* most households have a kind of preference for dogs over cats, but  
+* on average, there are more cats than dogs in each household.  
+
+With these information, we can try to normalize the number of households with pets by the mean number of dogs/cats hosted.  
+
+```{r}
+norm_df <- df %>% 
+    mutate(norm_dogs = dog_own_households_1000 * mean_num_dogs_per_household, 
+           norm_cats = cat_own_households_1000 * mean_num_cats_per_household) %>% 
+    select(location, norm_dogs, norm_cats, perc_households_pets)
+```
+
+```{r}
+norm_df
+```
+
+```{r, dpi=200, fig.height=3}
+norm_df %>% 
+    ggplot(aes(x = reorder(location, -perc_households_pets), fill = location)) + 
+    geom_col(aes(y = norm_dogs - norm_cats)) + 
+    coord_flip() + 
+    labs(x = "US State", y = "Difference (in 1000s households)", 
+         title = "Dog- vs cat-owning households (normalized)", 
+         subtitle = "With normalized data, we see that cats win the fight.\nNegative values represent a preference for cats, while positive values denote a higher number of households hosting dogs.") + 
+    guides(fill = FALSE) + 
+    scale_y_continuous(breaks = c(-1000, -500, 0, 500, 1000, 1500))
+```
+
+With this computation, we can clearly see that most US States host more cats than dogs in their houses.  
+We could have reached the same conclusion by simply plotting the total population of dogs and cats, with a few differences.  
+
+```{r, dpi=200, fig.height=3}
+df %>% 
+    ggplot(aes(x = reorder(location, -perc_households_pets), fill = location)) + 
+    geom_col(aes(y = dog_population_1000 - cat_population_1000)) + 
+    coord_flip() + 
+    labs(x = "US State", y = "Difference (in 1000s pets)", 
+         title = "Difference of dog/cat population", 
+         subtitle = "Most US States host cats, rather than dogs.\nNegative values represent cats outnumbering dogs, while positive values denote a higher number of dogs.") + 
+    guides(fill = FALSE) + 
+    scale_y_continuous(breaks = c(-1000, -500, 0, 500, 1000, 1500))
+```
+
+___ 
+
+```{r}
+sessionInfo()
+```
+
