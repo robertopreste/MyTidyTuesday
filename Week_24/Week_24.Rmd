@@ -16,7 +16,8 @@ library(skimr)
 
 ___ 
 
-While the original article from the [Washington Post](https://www.washingtonpost.com/news/wonk/wp/2014/07/28/where-cats-are-more-popular-than-dogs-in-the-u-s-and-all-over-the-world/?utm_term=.670d783ef6cc) shows the distribution of cat and dogs in the entire globe, for this week we'll focus only on data coming from the USA, using a dataset offered by [data.world](https://data.world/datanerd/cat-vs-dog-popularity-in-u-s).  
+We are dealing with puppies this week!  
+While the original article from the [Washington Post](https://www.washingtonpost.com/news/wonk/wp/2014/07/28/where-cats-are-more-popular-than-dogs-in-the-u-s-and-all-over-the-world/?utm_term=.670d783ef6cc) shows the distribution of cats and dogs in the entire globe, for this week we'll focus only on data coming from the USA, using a dataset offered by [data.world](https://data.world/datanerd/cat-vs-dog-popularity-in-u-s).  
 
 Let's first read in the data and rename the columns for simplicity.  
 
