@@ -52,7 +52,7 @@ ___
 
 Let's first visualize the percentage of household with pets in each State.  
 
-```{r, dpi=200, fig.height=3}
+```{r, dpi=200}
 df %>% 
     ggplot(aes(x = reorder(location, -perc_households_pets), 
                y = perc_households_pets, fill = location)) + 
@@ -70,14 +70,14 @@ District of Columbia, instead, doesn't seem to like pets this much, scoring a li
 
 Let's see if there is any preference for dogs over cats (or viceversa) in these States.  
 
-```{r, dpi=200, fig.height=3}
+```{r, dpi=200}
 df %>% 
     ggplot(aes(x = reorder(location, -perc_households_pets), fill = location)) + 
     geom_col(aes(y = dog_own_households_1000 - cat_own_households_1000)) + 
     coord_flip() + 
     labs(x = "US State", y = "Difference (in 1000s households)", 
          title = "Dog- vs cat-owning households", 
-         subtitle = "Households with dogs definitely outnumber those hosting cats.\nNegative values represent a preference for cats, while positive values denote a higher number of households hosting dogs.") + 
+         subtitle = "Households with dogs definitely outnumber those hosting cats.") + 
     guides(fill = FALSE) + 
     scale_y_continuous(breaks = c(-250, 0, 250, 500, 750, 1000, 1250))
 ```
@@ -110,7 +110,7 @@ gath_df %>%
     geom_point(alpha = 0.5) + 
     labs(x = "Households (in 1000s)", y = "Number of pets", 
          title = "Mean number of dogs/cats per household", 
-         subtitle = "The number of pets per household seems to reach a plateau after 1 million households with pets.")
+         subtitle = "The number of pets per household seems to reach a plateau after 1M households with pets.")
 ```
 
 
@@ -138,14 +138,14 @@ norm_df <- df %>%
 norm_df
 ```
 
-```{r, dpi=200, fig.height=3}
+```{r, dpi=200}
 norm_df %>% 
     ggplot(aes(x = reorder(location, -perc_households_pets), fill = location)) + 
     geom_col(aes(y = norm_dogs - norm_cats)) + 
     coord_flip() + 
     labs(x = "US State", y = "Difference (in 1000s households)", 
          title = "Dog- vs cat-owning households (normalized)", 
-         subtitle = "With normalized data, we see that cats win the fight.\nNegative values represent a preference for cats, while positive values denote a higher number of households hosting dogs.") + 
+         subtitle = "With normalized data, we see that cats win the fight.") + 
     guides(fill = FALSE) + 
     scale_y_continuous(breaks = c(-1000, -500, 0, 500, 1000, 1500))
 ```
@@ -153,14 +153,14 @@ norm_df %>%
 With this computation, we can clearly see that most US States host more cats than dogs in their houses.  
 We could have reached the same conclusion by simply plotting the total population of dogs and cats, with a few differences.  
 
-```{r, dpi=200, fig.height=3}
+```{r, dpi=200}
 df %>% 
     ggplot(aes(x = reorder(location, -perc_households_pets), fill = location)) + 
     geom_col(aes(y = dog_population_1000 - cat_population_1000)) + 
     coord_flip() + 
     labs(x = "US State", y = "Difference (in 1000s pets)", 
          title = "Difference of dog/cat population", 
-         subtitle = "Most US States host cats, rather than dogs.\nNegative values represent cats outnumbering dogs, while positive values denote a higher number of dogs.") + 
+         subtitle = "Most US States host cats, rather than dogs.") + 
     guides(fill = FALSE) + 
     scale_y_continuous(breaks = c(-1000, -500, 0, 500, 1000, 1500))
 ```
