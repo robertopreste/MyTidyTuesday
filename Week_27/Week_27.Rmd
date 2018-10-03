@@ -1,0 +1,150 @@
+---
+title: "Week 27 - US Births"
+output: github_document
+author: "Roberto Preste"
+date: "`r Sys.Date()`"
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(tidyverse)
+library(magrittr)
+library(lubridate)
+library(skimr)
+library(RColorBrewer)
+```
+
+___  
+
+A funny dataset for this week's TidyTuesday: how many babies are born on Friday 13^th^ compared to other days?  
+The [original article](https://fivethirtyeight.com/features/some-people-are-too-superstitious-to-have-a-baby-on-friday-the-13th/) and data are offered by fivethirtyeight ([here](https://github.com/rudeboybert/fivethirtyeight) is their GitHub profile, where all the raw data can be found).  
+
+We will first load the data into R.  
+
+```{r results='hide'}
+df <- read_csv("data/us_births_2000-2014.csv")
+```
+
+```{r}
+head(df)
+```
+
+___  
+
+## Data Exploration  
+
+Let's check for missing values and other issues.  
+
+```{r}
+skim(df)
+```
+
+Everything seems to be in order.  
+Let's add another column, `date`, to obtain the proper date from the `year`, `month` and `date_of_month` features.  
+
+```{r}
+df %<>% 
+    mutate(date = as_date(paste(year, month, date_of_month, sep = "-")))
+```
+
+```{r}
+df
+```
+
+I will create a set of colors that I'll use during this analysis.  
+
+```{r}
+pastels <- brewer.pal(4, "Pastel1")
+```
+
+___  
+
+## Discussion  
+
+Now we can have a quick look at the distribution of births over the years.  
+
+```{r, dpi=200}
+df %>% 
+    ggplot(aes(x = year, y = births)) + 
+    geom_boxplot(aes(group = year), fill = pastels[2]) + 
+    scale_x_continuous(breaks = c(2000:2014)) + 
+    labs(x = "Year", y = "Births", title = "Births distribution over years")
+```
+
+The number of births each year seems to be quite constant, with a small increase in 2006-2008.  
+Let's plot the same distribution over months this time.  
+
+```{r, dpi=200}
+df %>% 
+    ggplot(aes(x = month, y = births)) + 
+    geom_boxplot(aes(group = month), fill = pastels[2]) + 
+    scale_x_continuous(breaks = c(1:12), 
+                       labels = month.abb) + 
+    labs(x = "Month", y = "Births", title = "Births distribution over months")
+```
+
+It looks like most births are occurring in September; this is quite interesting, and my guess is that this may due to couples being able to *"spend more time together"* during Christmas holidays, if you know what I mean...  
+Lastly, let's view the distribution of births over days of a month.  
+
+```{r, dpi=200}
+day_colors <- c(rep(pastels[2], 12), pastels[1], rep(pastels[2], 18))
+df %>% 
+    ggplot(aes(x = date_of_month, y = births)) + 
+    geom_boxplot(aes(group = date_of_month), fill = day_colors) + 
+    scale_x_continuous(breaks = c(1, 10, 20, 30)) + 
+    labs(x = "Day of month", y = "Births", title = "Births distribution over days of the month")
+```
+
+And there it is! Each 13^th^ day the number of births is a bit lower than the other days; the same is true for the 31^st^, but this may be due to months having only 30 days. Let's explore a bit more by plotting the same per-day distribution splitted by month.  
+
+```{r, dpi=200, message=FALSE, warning=FALSE}
+df %>% 
+    ggplot(aes(x = date_of_month, y = births)) + 
+    geom_boxplot(aes(group = date_of_month)) +
+    facet_wrap(month ~ ., nrow = 4, ncol = 3, 
+               labeller = function(variable, value) {return(month.abb[value])}) + 
+    scale_x_continuous(breaks = c(1, 10, 20, 30)) + 
+    labs(x = "Day of month", y = "Births", title = "Births distribution over days per each month")
+```
+
+Although this is quite an ugly plot, we can see that usually every 13^th^ of each month few babies are born. The same occurs with national holydays, and this is obvious from the drop in the number of births around Christmas, or on the 4^th^ of July, or during the last few days of November for Thanksgiving.  
+
+But we haven't still explored the number of births occurring on Friday 13^th^.  
+Let's first see how birth are distributed over days of the week.  
+
+```{r, dpi=200}
+week_colors <- c(rep(pastels[2], 5), rep(pastels[1], 2))
+df %>% 
+    ggplot(aes(x = day_of_week, y = births)) + 
+    geom_boxplot(aes(group = day_of_week), fill = week_colors) + 
+    scale_x_continuous(breaks = c(1:7), 
+                       labels = c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")) +
+    labs(x = "Day of the week", y = "Births", title = "Births distribution over the week")
+```
+
+We can see a strong dicrease in the number of newborns during the weekends, and this is quite expected.  
+Now let's gather all these information and actually check if Friday 13^th^ is really a no-no for delivering babies.  
+
+```{r, dpi=200}
+df %>% 
+    mutate(lucky = case_when(date_of_month == 13 & day_of_week == 5 ~ "Friday 13", 
+                             date_of_month == 13 & day_of_week != 5 ~ "Regular 13",
+                             date_of_month != 13 & day_of_week == 5 ~ "Regular Friday", 
+                             TRUE ~ "Other")) %>% 
+    filter(lucky != "Other") %>% 
+    ggplot(aes(x = date, y = births, color = lucky)) + 
+    geom_point() + 
+    geom_smooth(method = "loess", se = F) + 
+    labs(x = "Date", y = "Births", title = "Number of births on 13s, Fridays and Friday 13s") + 
+    guides(color = guide_legend(title = NULL)) + 
+    theme(legend.position = "bottom")
+```
+
+From what we see, there is no actual decrease in the number of births on Friday 13^th^, but rather on the 13^th^ of each month, regardless of the day of the week.  
+
+___ 
+
+```{r}
+sessionInfo()
+```
