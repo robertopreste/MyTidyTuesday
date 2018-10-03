@@ -61,18 +61,12 @@ skim(df)
     ##  n variables: 5 
     ## 
     ## ── Variable type:integer ──────────────────────────────────────────────────────────────────────────────────────────
-    ##       variable missing complete    n     mean      sd   p0  p25   p50
-    ##         births       0     5479 5479 11350.07 2325.82 5728 8740 12343
-    ##  date_of_month       0     5479 5479    15.73    8.8     1    8    16
-    ##    day_of_week       0     5479 5479     4       2       1    2     4
-    ##          month       0     5479 5479     6.52    3.45    1    4     7
-    ##           year       0     5479 5479  2007       4.32 2000 2003  2007
-    ##    p75  p100     hist
-    ##  13082 16081 ▁▃▂▁▃▇▂▁
-    ##     23    31 ▇▇▇▇▆▇▇▇
-    ##      6     7 ▇▇▇▇▁▇▇▇
-    ##     10    12 ▇▅▇▃▅▇▅▇
-    ##   2011  2014 ▇▇▇▇▅▇▇▇
+    ##       variable missing complete    n     mean      sd   p0  p25   p50   p75  p100     hist
+    ##         births       0     5479 5479 11350.07 2325.82 5728 8740 12343 13082 16081 ▁▃▂▁▃▇▂▁
+    ##  date_of_month       0     5479 5479    15.73    8.8     1    8    16    23    31 ▇▇▇▇▆▇▇▇
+    ##    day_of_week       0     5479 5479     4       2       1    2     4     6     7 ▇▇▇▇▁▇▇▇
+    ##          month       0     5479 5479     6.52    3.45    1    4     7    10    12 ▇▅▇▃▅▇▅▇
+    ##           year       0     5479 5479  2007       4.32 2000 2003  2007  2011  2014 ▇▇▇▇▅▇▇▇
 
 Everything seems to be in order.
 Let's add another column, `date`, to obtain the proper date from the `year`, `month` and `date_of_month` features.
@@ -226,22 +220,16 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] bindrcpp_0.2.2     RColorBrewer_1.1-2 skimr_1.0.3       
-    ##  [4] lubridate_1.7.4    magrittr_1.5       forcats_0.3.0     
-    ##  [7] stringr_1.3.1      dplyr_0.7.6        purrr_0.2.5       
-    ## [10] readr_1.1.1        tidyr_0.8.1        tibble_1.4.2      
+    ##  [1] bindrcpp_0.2.2     RColorBrewer_1.1-2 skimr_1.0.3        lubridate_1.7.4    magrittr_1.5       forcats_0.3.0     
+    ##  [7] stringr_1.3.1      dplyr_0.7.6        purrr_0.2.5        readr_1.1.1        tidyr_0.8.1        tibble_1.4.2      
     ## [13] ggplot2_3.0.0      tidyverse_1.2.1   
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tidyselect_0.2.4 haven_1.1.2      lattice_0.20-35  colorspace_1.3-2
-    ##  [5] htmltools_0.3.6  yaml_2.2.0       utf8_1.1.4       rlang_0.2.2     
-    ##  [9] pillar_1.3.0     glue_1.3.0       withr_2.1.2      modelr_0.1.2    
-    ## [13] readxl_1.1.0     bindr_0.1.1      plyr_1.8.4       munsell_0.5.0   
-    ## [17] gtable_0.2.0     cellranger_1.1.0 rvest_0.3.2      evaluate_0.11   
-    ## [21] labeling_0.3     knitr_1.20       fansi_0.3.0      broom_0.5.0     
-    ## [25] Rcpp_0.12.18     scales_1.0.0     backports_1.1.2  jsonlite_1.5    
-    ## [29] hms_0.4.2        digest_0.6.17    stringi_1.2.4    grid_3.5.1      
-    ## [33] rprojroot_1.3-2  cli_1.0.0        tools_3.5.1      lazyeval_0.2.1  
-    ## [37] crayon_1.3.4     pkgconfig_2.0.2  xml2_1.2.0       assertthat_0.2.0
-    ## [41] rmarkdown_1.10   httr_1.3.1       rstudioapi_0.7   R6_2.2.2        
-    ## [45] nlme_3.1-137     compiler_3.5.1
+    ##  [1] tidyselect_0.2.4 haven_1.1.2      lattice_0.20-35  colorspace_1.3-2 htmltools_0.3.6  yaml_2.2.0      
+    ##  [7] utf8_1.1.4       rlang_0.2.2      pillar_1.3.0     glue_1.3.0       withr_2.1.2      modelr_0.1.2    
+    ## [13] readxl_1.1.0     bindr_0.1.1      plyr_1.8.4       munsell_0.5.0    gtable_0.2.0     cellranger_1.1.0
+    ## [19] rvest_0.3.2      evaluate_0.11    labeling_0.3     knitr_1.20       fansi_0.3.0      broom_0.5.0     
+    ## [25] Rcpp_0.12.18     scales_1.0.0     backports_1.1.2  jsonlite_1.5     hms_0.4.2        digest_0.6.17   
+    ## [31] stringi_1.2.4    grid_3.5.1       rprojroot_1.3-2  cli_1.0.0        tools_3.5.1      lazyeval_0.2.1  
+    ## [37] crayon_1.3.4     pkgconfig_2.0.2  xml2_1.2.0       assertthat_0.2.0 rmarkdown_1.10   httr_1.3.1      
+    ## [43] rstudioapi_0.7   R6_2.2.2         nlme_3.1-137     compiler_3.5.1

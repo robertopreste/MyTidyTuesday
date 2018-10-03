@@ -7,6 +7,10 @@ editor_options:
   chunk_output_type: inline
 ---
 
+```{r global_options, echo = FALSE, include = FALSE}
+options(width = 120)
+```
+
 ```{r, results='hide', message=FALSE, warning=FALSE}
 library(tidyverse)
 library(magrittr)
