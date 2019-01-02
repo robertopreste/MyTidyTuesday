@@ -1,0 +1,118 @@
+---
+title: 'Week 1 - #rstats and #TidyTuesday Tweets from rtweet'
+author: "Roberto Preste"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(width = 120)
+```
+
+## Overview  
+
+For the first TidyTuesday of 2019, some sort of meta-datasets: tweets with [#rstats](https://twitter.com/hashtag/rstats) or [#TidyTuesday](https://twitter.com/hashtag/TidyTuesday) hashtags! These tweets were collected using the [rtweet](https://rtweet.info/) package, and some background can be found in the [original article](https://stackoverflow.blog/2017/10/10/impressive-growth-r/) on Stack Overflow Blog.  
+
+I chose to use the #TidyTuesday dataset, which can be downloaded from the official [GitHub repo](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-01-01) of TidyTuesday.  
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(wordcloud)
+library(RColorBrewer)
+library(caret)
+```
+
+```{r}
+download.file("https://github.com/rfordatascience/tidytuesday/raw/master/data/2019/2019-01-01/tidytuesday_tweets.rds", "data/tidytuesday_tweets.rds")
+df <- read_rds("data/tidytuesday_tweets.rds")
+```
+
+Let's have an overview of these data using `skim`.  
+
+```{r, message=FALSE, warning=FALSE}
+skim(df)
+```
+
+Seems like quite a huge dataset, with lots of interesting variables.  
+
+I chose something simple to celebrate a new year of TidyTuesday challenges, and to congratulate with all the people involved in this project, so I'll just use the `screen_name` feature, which contains the Twitter handler of each contributor.  
+
+___  
+
+## Word clouds  
+
+As just said, for this week's dataset I decided to focus on people: let's create a word cloud with the most active people of TidyTuesday!  
+
+```{r}
+handlers <- df %>% 
+    group_by(screen_name) %>% 
+    summarise(n = n()) 
+handlers
+```
+
+```{r, dpi=200}
+set.seed(420)
+wordcloud(words = handlers$screen_name, freq = handlers$n, 
+          scale = c(2, 0.5))
+```
+
+### Most active contributors  
+
+This doesn't look so good: the cloud is overcrowded, with [thomas_mock](https://twitter.com/thomas_mock) and [R4DScommunity](https://twitter.com/R4DScommunity) dominating it, since they are those actually sharing and spreading each week's dataset.  
+Let's try to remove these handlers, as well as those with less than a few occurrences. The plot is also quite boring, with all this black all over the place, so we'll add some colours too.  
+
+```{r, dpi=200}
+top_handlers <- handlers %>% 
+    filter(!screen_name %in% c("thomas_mock", "R4DScommunity"),
+           n >= 5)
+
+set.seed(420)
+wordcloud(words = top_handlers$screen_name, freq = top_handlers$n, 
+          colors = brewer.pal(12, "Paired"), random.order = F, 
+          scale = c(2, 0.4))
+```
+
+### Less active contributors  
+
+We should give some props also to the people who made few contributions to the TidyTuesday project, so let's wordcloud them too.  
+
+```{r, dpi=200}
+bott_handlers <- handlers %>% 
+    filter(n < 5)
+
+set.seed(420)
+wordcloud(words = bott_handlers$screen_name, freq = bott_handlers$n, 
+          colors = brewer.pal(12, "Paired"), random.order = F, 
+          scale = c(1, 0.1))
+```
+
+This cloud also doesn't look very nice, so we may have to rescale the number of contributions to a [0, 1] range, using the `caret` package.  
+
+```{r, dpi=200}
+preprocess_params <- preProcess(bott_handlers, method = c("range"))
+scaled_handlers <- predict(preprocess_params, bott_handlers)
+
+set.seed(420)
+wordcloud(words = scaled_handlers$screen_name, freq = scaled_handlers$n, 
+          colors = brewer.pal(12, "Paired"), random.order = F, 
+          scale = c(1, 0.1))
+```
+
+## Conclusion  
+
+I wanted to give some credits to all the people involved in [#TidyTuesday](https://twitter.com/hashtag/TidyTuesday), and I thought the best way was to plot their names (actually, Twitter usernames!) together with their fellow TidyTuesday-ers!  
+Regardless of the number of TidyTuesday posts you made in 2018, congratulations for sharing your work and knowledge, and if you still aren't into it, you really should spend some time engaging in this community project!  
+
+___  
+
+```{r}
+sessionInfo()
+```
+
+
+
