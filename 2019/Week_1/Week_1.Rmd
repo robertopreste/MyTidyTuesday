@@ -1,11 +1,17 @@
 ---
-title: 'Week 1 - #rstats and #TidyTuesday Tweets from rtweet'
+title: 'TidyTuesday 2019 - Week 1 - #rstats and #TidyTuesday Tweets from rtweet'
 author: "Roberto Preste"
-date: "`r Sys.Date()`"
-output: 
-  github_document: 
-    html_preview: true
+date: "2019-01-02"
+output: html_document
 ---
+
+This is my work for week 1 (2019) of the [#TidyTuesday](https://thomasmock.netlify.com/post/tidytuesday-a-weekly-social-data-project-in-r/) project.  
+
+This week's dataset contains tweets with [#rstats](https://twitter.com/hashtag/rstats) or [#TidyTuesday](https://twitter.com/hashtag/TidyTuesday) hashtags, collected using the [rtweet](https://rtweet.info/) package. Details can be found in the [original article](https://stackoverflow.blog/2017/10/10/impressive-growth-r/) published on Stack Overflow Blog.  
+
+All code and data can be found in my dedicated GitHub repository [MyTidyTuesday](https://github.com/robertopreste/MyTidyTuesday).  
+
+___
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -27,8 +33,11 @@ library(RColorBrewer)
 library(caret)
 ```
 
-```{r}
+```{r, eval=FALSE}
 download.file("https://github.com/rfordatascience/tidytuesday/raw/master/data/2019/2019-01-01/tidytuesday_tweets.rds", "data/tidytuesday_tweets.rds")
+```
+
+```{r}
 df <- read_rds("data/tidytuesday_tweets.rds")
 ```
 
