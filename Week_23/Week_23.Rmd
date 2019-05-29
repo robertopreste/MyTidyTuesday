@@ -1,11 +1,24 @@
 ---
-title: "TidyTuesday Week 23 - Fast Food Calories"
+title: "TidyTuesday 2018 - Week 23 - Fast Food Calories"
 author: "Roberto Preste"
-date: "`r Sys.Date()`"
-output: github_document
+date: "2018-09-04"
+output: html_document
 editor_options: 
   chunk_output_type: inline
 ---
+
+This is my work for week 23 of the [#TidyTuesday](https://thomasmock.netlify.com/post/tidytuesday-a-weekly-social-data-project-in-r/) project.
+
+This week’s dataset was about nutritional information from several fast food franchises, with data regarding entrees food in particular. Since I am a bit busy at work after the summer holidays, I haven’t had much time to deeply explore this dataset. A more complete analysis can be found in the in the [original article](https://www.franchiseopportunities.com/blog/general-franchise-information/fast-food-calorie-comparison-charts), or by visiting [fastfoodnutrition.org](https://fastfoodnutrition.org/), which contains more extensive data on this topic.
+
+All code and data can be found in my dedicated GitHub repository [MyTidyTuesday](https://github.com/robertopreste/MyTidyTuesday).
+
+___
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(width = 120)
+```
 
 ```{r, results='hide', message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -21,7 +34,7 @@ Original data come from [fastfoodnutrition.org](https://fastfoodnutrition.org), 
 
 Firstly, we need to scrape the data from the data source (function kindly provided by [thomas_mock](https://twitter.com/thomas_mock)), then we can combine all the data and save them.  
 
-```{r}
+```{r, eval=FALSE}
 food_scrape <- function(restaurant, tbl_sel){
     url <- glue::glue("https://fastfoodnutrition.org/{restaurant}/chart")
     url %>% 
@@ -38,7 +51,7 @@ food_scrape <- function(restaurant, tbl_sel){
 } 
 ```
 
-```{r}
+```{r, eval=FALSE}
 mcd_df <- food_scrape("mcdonalds", c(1,2,3,9,19))
 cfa_df <- food_scrape("chick-fil-a", c(1,2,8,13))
 sonic_df <- food_scrape("sonic", c(1,2,17,18,20))
