@@ -1,9 +1,18 @@
 ---
-title: "TidyTuesday Week 20 - Russian Troll Tweets"
+title: "TidyTuesday 2018 - Week 20 - Russian Troll Tweets"
 author: "Roberto Preste"
-date: "`r Sys.Date()`"
-output: github_document
+date: "2018-08-15"
+output: html_document
 ---
+
+This is my work for week 20 of the [#TidyTuesday](https://thomasmock.netlify.com/post/tidytuesday-a-weekly-social-data-project-in-r/) project.
+
+This week’s dataset was focused on Russian Trolls Tweets. As further explained in the [original article](https://fivethirtyeight.com/features/why-were-sharing-3-million-russian-troll-tweets/) from FiveThirtyEight, almost 3000 Twitter troll accounts were found to be active from 2015 to 2018, possibly influencing the American elections outcome as well as subsequent events.
+In this notebook I explored a bit the collection of almost 3 millions tweets from these troll handles, highlighting some of their peculiarities and tweeting trends over time.
+
+All code and data can be found in my dedicated GitHub repository [MyTidyTuesday](https://github.com/robertopreste/MyTidyTuesday).
+
+___
 
 ```{r, results='hide', message=FALSE, warning=FALSE}
 library(tidyverse)
