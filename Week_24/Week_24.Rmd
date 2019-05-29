@@ -1,11 +1,25 @@
 ---
-title: "Week 24 - Cats vs Dogs (USA)"
-output: github_document
+title: "TidyTuesday 2018 - Week 24 - Cats vs Dogs (USA)"
+output: html_document
 author: "Roberto Preste"
-date: "`r Sys.Date()`"
+date: "2018-09-11"
 editor_options: 
   chunk_output_type: inline
 ---
+
+This is my work for week 24 (2018) of the [#TidyTuesday](https://thomasmock.netlify.com/post/tidytuesday-a-weekly-social-data-project-in-r/) project.
+
+We are dealing with puppies this week!
+While the original article from the [Washington Post](https://www.washingtonpost.com/news/wonk/wp/2014/07/28/where-cats-are-more-popular-than-dogs-in-the-u-s-and-all-over-the-world/?utm_term=.670d783ef6cc) shows the distribution of cats and dogs in the entire globe, for this week we’ll focus only on data coming from the USA, using a dataset offered by [data.world](https://data.world/datanerd/cat-vs-dog-popularity-in-u-s).
+
+All code and data can be found in my dedicated GitHub repository [MyTidyTuesday](https://github.com/robertopreste/MyTidyTuesday).
+
+___
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(width = 120)
+```
 
 ```{r, results='hide', message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -15,9 +29,6 @@ library(skimr)
 ```
 
 ___ 
-
-We are dealing with puppies this week!  
-While the original article from the [Washington Post](https://www.washingtonpost.com/news/wonk/wp/2014/07/28/where-cats-are-more-popular-than-dogs-in-the-u-s-and-all-over-the-world/?utm_term=.670d783ef6cc) shows the distribution of cats and dogs in the entire globe, for this week we'll focus only on data coming from the USA, using a dataset offered by [data.world](https://data.world/datanerd/cat-vs-dog-popularity-in-u-s).  
 
 Let's first read in the data and rename the columns for simplicity.  
 
